@@ -10,8 +10,6 @@ mongo = MongoClient(MONGO)
 mongodb = mongo.HANSAKA
 db = mongodb.FSUB #db
 
-
-
 def fsub_chats():
    chats = []
    for x in db.find():
@@ -40,8 +38,7 @@ async def ForceSub(_, message):
                     await message.reply_text("I have mute you join my force sub channel and click the below button !",
                    reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("join Channel ✅", url=link),
                        InlineKeyboardButton("Unmute Me", callback_data=f"fsub_user:{user_id}"),]]))
-
-                
+              
 @Client.on_callback_query(filters.regex("fsub_user"))
 async def unmute_fsubbed(_, query):
        chat_id = query.message.chat.id
@@ -55,10 +52,8 @@ async def unmute_fsubbed(_, query):
               hmm = await _.get_chat_member(chat_id=channel, user_id=user_id)
            except UserNotParticipant:
                  return await query.answer("you most join the force channel after click this button to unmute you!", show_alert=True)
-           await _.@restrict_chat_member(chat_id, user_id, ChatPermissions(can_send_messages=True, can_send_media_messages=True, can_send_other_messages=True))
+           await _.restrict_chat_member(chat_id, user_id, ChatPermissions(can_send_messages=True, can_send_media_messages=True, can_send_other_messages=True))
            return await query.message.edit("Thanks For Joining My Channel Now you can speak to members!")
-
-
 
 @Client.on_message(filters.command("fsub"))
 async def ForceSubscribe(_, message):
